@@ -98,11 +98,14 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                         "Please supply the NAME value.")
 
             conn_params = {'charset': 'UTF8'}
-            conn_params['dsn'] = settings_dict['NAME']
-            if settings_dict['HOST']:
-                conn_params['dsn'] = ('%s:%s') % (settings_dict['HOST'], conn_params['dsn'])
             if settings_dict['PORT']:
-                conn_params['port'] = settings_dict['PORT']
+                conn_params['dsn'] = (
+                    '%s/%s:%s') % (
+                    settings_dict['HOST'], settings_dict['PORT'],
+                    settings_dict['NAME'])
+            else:
+                conn_params['dsn'] = ('%s:%s') % (
+                    settings_dict['HOST'], conn_params['NAME'])
             if settings_dict['USER']:
                 conn_params['user'] = settings_dict['USER']
             if settings_dict['PASSWORD']:
